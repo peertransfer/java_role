@@ -1,5 +1,5 @@
 ---
-# tasks file for jira_role
+# tasks file for java_role
 
 - name: Java | OpenJDK | Add required repositories
   apt_repository:
