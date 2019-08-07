@@ -1,0 +1,14 @@
+---
+# vars file for java_role
+
+# Older versions requires login to be downloaded
+# http://www.oracle.com/technetwork/java/archive-139210.html
+java_oraclejdk_urls:
+  12.0.2:
+    url: https://download.oracle.com/otn-pub/java/jdk/12.0.2+10/e482c34c86bd4bf8b56c0b35558996b9/jdk-12.0.2_linux-x64_bin.tar.gz
+    # https://www.oracle.com/webfolder/s/digest/12-0-2-checksum.html
+    sha256: 2dde6fda89a4ec6e6560ed464e917861c9e40bf576e7a64856dafc55abaaff51
+
+java_oraclejdk_version: 12.0.2
+
+java_oraclejdk_install_path: /opt/java/{{ java_oraclejdk_version }}

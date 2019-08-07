@@ -1,0 +1,40 @@
+---
+# tasks file for jira_role
+
+- name: Java | OpenJDK | Add required repositories
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+    update_cache: true
+  with_items: "{{ java_required_repositories_openjdk }}"
+
+- name: Java | OpenJDK | Install Java
+  apt:
+    name: "{{ java_openjdk_package }}={{ java_openjdk_version }}"
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  until: java_package_installed is succeeded
+  register: java_package_installed
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Java | OpenJDK | Update Env
+  alternatives:
+    name: java
+    path: "{{ java_openjdk_home }}/bin/java"
+
+- name: Java | OpenJDK | Ensure Defaults on etc/alternatives systems
+  file:
+    src: "{{ java_openjdk_home }}"
+    dest: "{{ java_openjdk_default_java_home }}"
+    force: true
+    state: link
+
+- name: Java | OpenJDK | Setting OpenJDK home
+  set_fact:
+    java_home: "{{ java_openjdk_home }}"
+
+- name: Java | OpenJDK | Export environment variables
+  template:
+    src: etc/profile.d/jdk_home.sh.j2
+    dest: /etc/profile.d/jdk_home.sh
