@@ -6,7 +6,8 @@
   register: java_check_version
   changed_when: false
   ignore_errors: true
-
+  check_mode: no
+  
 - name: Java | Oracle | Download .tar.gz file containing binaries from Oracle website
   get_url:
     url: "{{ java_oraclejdk_urls[java_oraclejdk_version].url }}"
@@ -15,7 +16,9 @@
     headers:
       Cookie: "oraclelicense=accept-securebackup-cookie"
     checksum: "sha256:{{ java_oraclejdk_urls[java_oraclejdk_version].sha256 }}"
-  when: java_check_version is failed or java_oraclejdk_version not in java_check_version.stderr
+  when: >
+    (java_oraclejdk_version not in java_check_version.stderr) or
+    (java_check_version is failed)
   until: java_download is succeeded
   register: java_download
 
