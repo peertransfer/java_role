@@ -7,7 +7,7 @@
   changed_when: false
   ignore_errors: true
   check_mode: no
-  
+
 - name: Java | Oracle | Download .tar.gz file containing binaries from Oracle website
   get_url:
     url: "{{ java_oraclejdk_urls[java_oraclejdk_version].url }}"
@@ -36,6 +36,7 @@
     extra_opts: --strip-components=1
   when: java_download is changed
   register: java_package_installed
+  notify: restart_services
 
 - name: Java | Oracle | Setting OpenJDK home
   set_fact:
@@ -55,11 +56,3 @@
     - "java"
     - "javac"
     - "jar"
-
-- name: Java | Services | Restart dependant services
-  service:
-    name: "{{ items }}"
-    state: restarted
-  with_items: "{{ services_restart }}"
-  when: java_package_installed.changed
-  ignore_errors: true

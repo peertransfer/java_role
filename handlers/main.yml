@@ -1,2 +1,10 @@
 ---
 # handlers file for java_role
+
+- name: restart_services
+  service:
+    name: "{{ items }}"
+    state: restarted
+  with_items: "{{ services_restart }}"
+  when: services_restart is defined
+  ignore_errors: true
