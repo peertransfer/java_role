@@ -1,15 +1,6 @@
 ---
 # tasks file for java_role
 
-- name: Java | Include OS family/distribution specific defaults
-  include_vars: "{{ item }}"
-  with_first_found:
-    - files:
-        - "{{ role_path }}/defaults/{{ ansible_os_family | lower }}-{{ ansible_distribution_major_version }}.yml"
-        - "{{ role_path }}/defaults/{{ ansible_os_family | lower }}.yml"
-        - "main.yml"
-      ignore_errors: true
-
 - name: Java | Include OS family/distribution specific variables
   include_vars: "{{ item }}"
   with_first_found:
