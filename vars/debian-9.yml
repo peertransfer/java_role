@@ -1,7 +1,7 @@
 ---
 # vars file for java_role
 
-java_openjdk_version: "11.0.4+11-1~bpo9+1"
+java_openjdk_version: "11.0.5+10-1~bpo9+1"
 java_openjdk_version_major: "11"
 
 java_required_repositories_openjdk:
