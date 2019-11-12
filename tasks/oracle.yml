@@ -1,12 +1,33 @@
 ---
 # tasks file for java_role
 
-- name: Java | Oracle | Check Java version
-  command: java -version
-  register: java_check_version
-  changed_when: false
-  ignore_errors: true
-  check_mode: no
+- name: Java | Oracle | Determine if Java is already installed
+  command: which java
+  register: oracle_java_task_installed
+  changed_when: oracle_java_task_installed.rc != 0
+  failed_when: no
+# oracle_java_installed.rc == 0 : installed
+# oracle_java_installed.rc == 1 : not installed
+
+- name: Java | Oracle | Set fact oracle_java_installed
+  set_fact:
+    oracle_java_installed={{ not oracle_java_task_installed.changed }}
+
+- name: Java | Oracle | Determine which Java version is installed
+  shell: |
+    java -version 2>&1 |
+    head -n 1 |
+    awk '{ print $3 }' |
+    awk -F '"' '{ print $2 }'
+  register: oracle_java_task_version
+  when: oracle_java_installed
+  changed_when: False
+
+- name: Java | Oracle | Set fact oracle_java_installed_version
+  set_fact:
+    oracle_java_version_installed="{{ oracle_java_task_version.stdout }}"
+  when: oracle_java_task_version is defined and oracle_java_task_version.stdout is defined
+  changed_when: False
 
 - name: Java | Oracle | Download .tar.gz file containing binaries from Oracle website
   get_url:
@@ -17,8 +38,8 @@
       Cookie: "oraclelicense=accept-securebackup-cookie"
     checksum: "sha256:{{ java_oraclejdk_urls[java_oraclejdk_version].sha256 }}"
   when: >
-    (java_oraclejdk_version not in java_check_version.stderr) or
-    (java_check_version is failed)
+    (not oracle_java_installed) or
+    (java_oraclejdk_version != oracle_java_version_installed)
   until: java_download is succeeded
   register: java_download
 
@@ -36,7 +57,6 @@
     extra_opts: --strip-components=1
   when: java_download is changed
   register: java_package_installed
-  notify: restart_services
 
 - name: Java | Oracle | Setting OpenJDK home
   set_fact:
@@ -56,3 +76,11 @@
     - "java"
     - "javac"
     - "jar"
+
+- name: Java | Services | Restart dependant services
+  service:
+    name: "{{ items }}"
+    state: restarted
+  with_items: "{{ services_restart }}"
+  when: java_package_installed.changed
+  ignore_errors: true
