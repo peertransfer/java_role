@@ -38,3 +38,11 @@
   template:
     src: etc/profile.d/jdk_home.sh.j2
     dest: /etc/profile.d/jdk_home.sh
+
+- name: Java | Services | Restart dependant services
+  service:
+    name: "{{ items }}"
+    state: restarted
+  with_items: "{{ services_restart }}"
+  when: java_package_installed.changed
+  ignore_errors: true
