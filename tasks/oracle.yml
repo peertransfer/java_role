@@ -6,6 +6,7 @@
   register: oracle_java_task_installed
   changed_when: oracle_java_task_installed.rc != 0
   failed_when: no
+  check_mode: no
 # oracle_java_installed.rc == 0 : installed
 # oracle_java_installed.rc == 1 : not installed
 
