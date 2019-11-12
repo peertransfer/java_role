@@ -1,0 +1,25 @@
+---
+# defaults file for java_role
+
+java_source: "oracle"
+
+
+# [openjdk, oraclejdk]
+java_implementation: openjdk
+
+# OpenJDK implementation
+java_openjdk_package: openjdk-{{ java_openjdk_version_major }}-jdk-headless
+java_openjdk_home_dir: java-{{ java_openjdk_version_major }}-openjdk-amd64
+java_openjdk_home: /usr/lib/jvm/{{ java_openjdk_home_dir }}
+java_openjdk_default_java_home: /usr/lib/jvm/default-java
+
+# Older versions requires login to be downloaded
+# http://www.oracle.com/technetwork/java/archive-139210.html
+
+java_oraclejdk_urls:
+  13.0.1:
+    url: https://download.oracle.com/otn-pub/java/jdk/13.0.1+9/cec27d702aa74d5a8630c65ae61e4305/jdk-13.0.1_linux-x64_bin.tar.gz
+    # https://www.oracle.com/webfolder/s/digest/13-0-1-checksum.html
+    sha256: 593f25d35493ec3edc1af341dc5ad1aad455aef1fdb7e596af56df754625a09d
+java_oraclejdk_version: 13.0.1
+java_oraclejdk_install_path: /opt/java/{{ java_oraclejdk_version }}
