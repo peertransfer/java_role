@@ -23,6 +23,7 @@
     awk -F '"' '{ print $2 }'
   register: oracle_java_task_version
   when: oracle_java_installed
+  check_mode: no
   changed_when: False
 
 - name: Java | Oracle | Set fact oracle_java_installed_version
