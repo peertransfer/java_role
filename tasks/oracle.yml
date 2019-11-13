@@ -60,6 +60,7 @@
     extra_opts: --strip-components=1
   when: java_download is changed
   notify: restart_services
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Java | Oracle | Setting OpenJDK home
   set_fact:
