@@ -3,7 +3,7 @@
 
 - name: restart_services
   service:
-    name: "{{ items }}"
+    name: "{{ item }}"
     state: restarted
   with_items: "{{ services_restart }}"
   when: services_restart is defined
