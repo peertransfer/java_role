@@ -17,9 +17,9 @@ java_openjdk_default_java_home: /usr/lib/jvm/default-java
 # http://www.oracle.com/technetwork/java/archive-139210.html
 
 java_oraclejdk_urls:
-  13.0.1:
-    url: https://download.oracle.com/otn-pub/java/jdk/13.0.1+9/cec27d702aa74d5a8630c65ae61e4305/jdk-13.0.1_linux-x64_bin.tar.gz
-    # https://www.oracle.com/webfolder/s/digest/13-0-1-checksum.html
-    sha256: 593f25d35493ec3edc1af341dc5ad1aad455aef1fdb7e596af56df754625a09d
-java_oraclejdk_version: 13.0.1
+  13.0.2:
+    url: https://download.oracle.com/otn-pub/java/jdk/13.0.2+8/d4173c853231432d94f001e99d882ca7/jdk-13.0.2_linux-x64_bin.tar.gz
+    # https://www.oracle.com/webfolder/s/digest/13-0-2-checksum.html
+    sha256: e2214a723d611b4a781641061a24ca6024f2c57dbd9f75ca9d857cad87d9475f
+java_oraclejdk_version: 13.0.2
 java_oraclejdk_install_path: /opt/java/{{ java_oraclejdk_version }}
